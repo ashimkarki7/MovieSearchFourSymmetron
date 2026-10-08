@@ -22,7 +22,16 @@
       }
     ],
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "@app/*": ["./app/*"],
+
+      "@components": ["./components/index.ts"],
+      "@components/*": ["./components/*"],
+      "@components-types/*": ["./components/*/types"],
+
+      "@lib/*": ["./lib/*"],
+      "@globaltypes/*": ["./types/*"]
     }
   },
   "include": [
