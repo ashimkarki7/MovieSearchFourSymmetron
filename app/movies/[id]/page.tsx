@@ -74,8 +74,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
         aria-labelledby="overview-heading"
         className="flex flex-col gap-6 md:flex-row"
       >
-        {movie.posterPath && (
-          <div className="relative aspect-[2/3] w-full max-w-64 shrink-0 overflow-hidden rounded-lg bg-surface">
+        <div className="relative aspect-[2/3] w-full max-w-64 shrink-0 overflow-hidden rounded-lg bg-surface">
+          {movie.posterPath ? (
             <Image
               src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
               alt={`${movie.title} movie poster`}
@@ -83,8 +83,16 @@ export default async function MoviePage({ params }: MoviePageProps) {
               sizes="256px"
               className="object-cover"
             />
-          </div>
-        )}
+          ) : (
+            <div
+              role="img"
+              aria-label={`No poster available for ${movie.title}`}
+              className="flex h-full items-center justify-center text-center text-sm text-muted"
+            >
+              No poster available
+            </div>
+          )}
+        </div>
 
         <div className="flex flex-col gap-4">
           <h2

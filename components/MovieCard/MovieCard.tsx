@@ -24,10 +24,15 @@ export function MovieCard({ movie }: MovieCardProps) {
   const year = movie.releaseDate ? movie.releaseDate.slice(0, 4) : null;
 
   return (
-    <article className={base()}>
+    <article
+      className={base({
+        className:
+          "focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-400",
+      })}
+    >
       <Link
         href={`/movies/${movie.id}`}
-        className={base()}
+        className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-400"
         aria-label={`View details for ${movie.title}`}
       >
         <div className={posterWrapper()}>
