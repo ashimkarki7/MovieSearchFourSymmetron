@@ -30,5 +30,9 @@ export async function GET(_request: Request, { params }: RouteContext) {
     return problem(404, "Not Found", "The requested movie was not found.");
   }
 
+  if (id === 1002 && process.env.NODE_ENV === "development") {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+
   return NextResponse.json(movie);
 }

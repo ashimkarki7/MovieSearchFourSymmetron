@@ -6,6 +6,7 @@ import type {
   MovieSearchResponse,
   MovieVideo,
 } from "@globaltypes/movie";
+import type { TvSearchResponse } from "~/types/tv";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -72,4 +73,18 @@ export function getMovieDetails(id: number): Promise<MovieDetail> {
 
 export function getMovieVideos(id: number): Promise<MovieVideo[]> {
   return apiFetch<MovieVideo[]>(`/movies/${id}/videos`, { cache: "no-store" });
+}
+
+export function searchTvShows(
+  query: string,
+  page = 1,
+): Promise<TvSearchResponse> {
+  const params = new URLSearchParams({
+    query: query.trim(),
+    page: String(page),
+  });
+
+  return apiFetch<TvSearchResponse>(`/tv/search?${params.toString()}`, {
+    cache: "no-store",
+  });
 }

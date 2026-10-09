@@ -1,16 +1,11 @@
-import { SearchBar } from "~/components/SearchBar";
-import { TrendingGrid } from "~/components/TrendingGrid";
-import { Pagination } from "~/components/Pagination";
-import { getTrendingMovies, searchMovies } from "~/lib/api";
+import { SearchBar } from "@components/SearchBar";
+import { TrendingGrid } from "@components/TrendingGrid";
+import { Pagination } from "@components/Pagination";
+import { getTrendingMovies, searchMovies, searchTvShows } from "@lib/api";
+import type { HomePageProps } from "@globaltypes/homepage";
+import { TvGrid } from "@components/TvGrid";
 
 export const dynamic = "force-dynamic";
-
-interface HomePageProps {
-  searchParams: Promise<{
-    query?: string | string[];
-    page?: string | string[];
-  }>;
-}
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const params = await searchParams;
@@ -18,6 +13,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const rawQuery = Array.isArray(params.query) ? params.query[0] : params.query;
 
   const rawPage = Array.isArray(params.page) ? params.page[0] : params.page;
+
+  const rawMedia = Array.isArray(params.media) ? params.media[0] : params.media;
+
+  const media = rawMedia === "tv" ? "tv" : "movie";
 
   const validPage = rawPage && /^[1-9]\d*$/.test(rawPage) ? Number(rawPage) : 1;
 
@@ -30,11 +29,19 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   const isSearching = Boolean(query);
 
-  const searchResult = isSearching ? await searchMovies(query, page) : null;
+  const movieResult =
+    isSearching && media === "movie" ? await searchMovies(query, page) : null;
 
-  const movies = searchResult
-    ? searchResult.results
-    : await getTrendingMovies();
+  const tvResult =
+    isSearching && media === "tv" ? await searchTvShows(query, page) : null;
+
+  const movies = !isSearching
+    ? await getTrendingMovies()
+    : (movieResult?.results ?? []);
+
+  const tvShows = tvResult?.results ?? [];
+
+  const searchResult = media === "tv" ? tvResult : movieResult;
 
   return (
     <main className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10">
@@ -43,7 +50,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           Movie Search Case
         </h1>
 
-        <SearchBar key={query} query={query} />
+        <SearchBar query={query} media={media} />
       </header>
 
       <section aria-labelledby="movies-heading" className="flex flex-col gap-4">
@@ -59,7 +66,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           </p>
         )}
 
-        {movies.length > 0 && <TrendingGrid movies={movies} />}
+        {media === "tv" && isSearching
+          ? tvShows.length > 0 && <TvGrid shows={tvShows} />
+          : movies.length > 0 && <TrendingGrid movies={movies} />}
 
         {searchResult && (
           <Pagination
@@ -67,6 +76,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             page={searchResult.page}
             totalPages={searchResult.totalPages}
             totalResults={searchResult.totalResults}
+            media={media}
           />
         )}
       </section>
