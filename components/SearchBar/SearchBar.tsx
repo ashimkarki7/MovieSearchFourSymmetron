@@ -45,6 +45,9 @@ export function SearchBar({ query = "", media = "movie" }: SearchBarProps) {
       role="search"
       className="flex w-full max-w-md gap-2"
     >
+      <label htmlFor="search-media" className="sr-only">
+        Search category
+      </label>
       <select
         id="search-media"
         value={selectedMedia}

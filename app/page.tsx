@@ -5,7 +5,7 @@ import { getTrendingMovies, searchMovies, searchTvShows } from "@lib/api";
 import type { HomePageProps } from "@globaltypes/homepage";
 import { TvGrid } from "@components/TvGrid";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const params = await searchParams;
@@ -61,14 +61,18 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         {searchResult && (
           <p role="status" className="text-sm text-muted">
             {searchResult.totalResults === 0
-              ? "No movies found. Try another search."
-              : `${searchResult.totalResults} movies found`}
+              ? `No ${media?.charAt(0)?.toUpperCase() + media?.slice(1)} shows found. Try another search.`
+              : `${searchResult.totalResults} ${
+                  media === "tv" ? "TV shows" : "movies"
+                } found`}
           </p>
         )}
 
-        {media === "tv" && isSearching
-          ? tvShows.length > 0 && <TvGrid shows={tvShows} />
-          : movies.length > 0 && <TrendingGrid movies={movies} />}
+        {media === "tv" && isSearching ? (
+          <TvGrid shows={tvShows} />
+        ) : (
+          movies.length > 0 && <TrendingGrid movies={movies} />
+        )}
 
         {searchResult && (
           <Pagination

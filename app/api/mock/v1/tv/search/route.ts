@@ -40,12 +40,20 @@ export async function GET(request: NextRequest) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
   }
 
+  const normalized = query.toLowerCase();
+
+  if (normalized === "slow") {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+
   const matches =
-    query.toLowerCase() === "noresults"
+    normalized === "noresults"
       ? []
-      : MOCK_TV_SHOWS.filter((show) =>
-          show.name.toLowerCase().includes(query.toLowerCase()),
-        );
+      : normalized === "slow"
+        ? MOCK_TV_SHOWS
+        : MOCK_TV_SHOWS.filter((show) =>
+            show.name.toLowerCase().includes(normalized),
+          );
 
   const totalResults = matches.length;
   const totalPages = Math.ceil(totalResults / PAGE_SIZE);

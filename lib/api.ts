@@ -10,6 +10,22 @@ import type { TvSearchResponse } from "~/types/tv";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+const SEARCH_REVALIDATE_SECONDS = 60;
+
+function getSearchCacheOptions(query: string): RequestInit {
+  const mockScenarios = ["slow", "error", "noresults"];
+
+  if (mockScenarios.includes(query.trim().toLowerCase())) {
+    return { cache: "no-store" };
+  }
+
+  return {
+    next: {
+      revalidate: SEARCH_REVALIDATE_SECONDS,
+    },
+  };
+}
+
 if (!API_BASE_URL) {
   throw new Error(
     "NEXT_PUBLIC_API_BASE_URL is not set. Copy .env.example to .env.local and point it at the running API.",
@@ -58,9 +74,10 @@ export function searchMovies(
     query: query.trim(),
     page: String(page),
   });
-  return apiFetch<MovieSearchResponse>(`/movies/search?${params.toString()}`, {
-    cache: "no-store",
-  });
+  return apiFetch<MovieSearchResponse>(
+    `/movies/search?${params.toString()}`,
+    getSearchCacheOptions(query),
+  );
 }
 
 export function getMovieDetails(id: number): Promise<MovieDetail> {
@@ -84,7 +101,8 @@ export function searchTvShows(
     page: String(page),
   });
 
-  return apiFetch<TvSearchResponse>(`/tv/search?${params.toString()}`, {
-    cache: "no-store",
-  });
+  return apiFetch<TvSearchResponse>(
+    `/tv/search?${params.toString()}`,
+    getSearchCacheOptions(query),
+  );
 }
