@@ -31,6 +31,8 @@
       "@components-types/*": ["./components/*/types"],
 
       "@lib/*": ["./lib/*"],
+      "@mock/*": ["./lib/mock/*"],
+      "@constants": ["./constants/index.ts"],
       "@globaltypes/*": ["./types/*"]
     }
   },

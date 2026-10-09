@@ -43,3 +43,6 @@ export function getTrendingMovies(): Promise<Movie[]> {
 
 // TODO(candidate): add a searchMovies(query, page) function here once the API exposes
 // GET /movies/search — same apiFetch pattern as getTrendingMovies above.
+
+
+

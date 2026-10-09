@@ -1,0 +1,34 @@
+Absolute imports paths in TsConfig
+
+  "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "@app/*": ["./app/*"],
+
+      "@components": ["./components/index.ts"],
+      "@components/*": ["./components/*"],
+      "@components-types/*": ["./components/*/types"],
+
+      "@lib/*": ["./lib/*"],
+      "@mock/*": ["./lib/mock/*"],
+     .....
+
+Mock API Implementation and Testing
+
+I implemented the Mock API using Next.js App Router Route Handlers under app/api/mock/v1/movies/.
+I chose this approach because the project already uses Next.js 16, so no additional mock server or dependencies are required.
+
+The implementation follows the provided API contract, including response structures, camelCase properties, pagination metadata, HTTP status codes, and error responses using application/problem+json.
+
+The frontend communicates with the API through a centralized API client in lib/api.ts.
+
+The Mock API base URL is configured as:
+
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3000/api/mock/v1
+
+When the real backend becomes available, the base URL can be replaced with:
+
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5080/api/v1
+
+No changes to frontend API-consumption logic should be necessary because both implementations follow the same contract.
+
