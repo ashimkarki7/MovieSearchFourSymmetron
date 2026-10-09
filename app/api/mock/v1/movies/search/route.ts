@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MOCK_MOVIES } from "@mock/fixtures";
-import { PAGE_SIZE ,VALID_PAGE} from "@constants";
+import { PAGE_SIZE, VALID_PAGE } from "@constants";
 import { problem } from "@mock/problem";
-
 
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
@@ -25,7 +24,7 @@ export async function GET(request: NextRequest) {
   }
 
   const page = Number(rawPage);
-  const normalized = query.toLocaleLowerCase("en");
+  const normalized = query.toLowerCase();
 
   if (normalized === "error") {
     return problem(
@@ -43,7 +42,7 @@ export async function GET(request: NextRequest) {
       ? []
       : MOCK_MOVIES.filter((movie) =>
           movie.title
-            .toLocaleLowerCase("en")
+            .toLowerCase()
             .includes(normalized === "slow" ? "batman" : normalized),
         );
   const totalResults = matches.length;
