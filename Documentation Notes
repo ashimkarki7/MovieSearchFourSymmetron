@@ -32,3 +32,5 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:5080/api/v1
 
 No changes to frontend API-consumption logic should be necessary because both implementations follow the same contract.
 
+reference :https://developer.themoviedb.org/reference/collection-details
+

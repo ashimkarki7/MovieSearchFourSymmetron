@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { tv } from "tailwind-variants";
 
-import type { Movie } from "~/types/movie";
+import type { Movie } from "@globaltypes/movie";
 
 const card = tv({
   slots: {

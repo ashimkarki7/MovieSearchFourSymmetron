@@ -1,5 +1,5 @@
 import { MovieCard } from "~/components/MovieCard";
-import type { Movie } from "~/types/movie";
+import type { Movie } from "@globaltypes/movie";
 
 export interface TrendingGridProps {
   movies: Movie[];

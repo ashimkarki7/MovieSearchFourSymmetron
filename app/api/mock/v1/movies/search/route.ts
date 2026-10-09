@@ -6,10 +6,8 @@ import { problem } from "@mock/problem";
 
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
-
   const query = params.get("query")?.trim();
   const rawPage = params.get("page") ?? "1";
-
 
   if (!query) {
     return problem(
@@ -48,9 +46,9 @@ export async function GET(request: NextRequest) {
             .toLocaleLowerCase("en")
             .includes(normalized === "slow" ? "batman" : normalized),
         );
-
   const totalResults = matches.length;
   const totalPages = Math.ceil(totalResults / PAGE_SIZE);
+
   if (page > Math.max(1, totalPages)) {
     return problem(
       400,
@@ -59,16 +57,10 @@ export async function GET(request: NextRequest) {
     );
   }
 
-
-
-
   return NextResponse.json({
     page,
     totalPages,
     totalResults,
     results: matches.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
   });
-
-
-
 }

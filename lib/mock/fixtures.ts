@@ -1,4 +1,4 @@
-import type { Movie } from "~/types/movie";
+import type { Movie } from "@globaltypes/movie";
 
 export const MOCK_MOVIES: Movie[] = [
   {

@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Movie } from "~/types/movie";
+import type { Movie, MovieSearchResponse } from "@globaltypes/movie";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -45,4 +45,16 @@ export function getTrendingMovies(): Promise<Movie[]> {
 // GET /movies/search — same apiFetch pattern as getTrendingMovies above.
 
 
+export function searchMovies(
+  query: string,
+  page = 1,
+): Promise<MovieSearchResponse> {
+  const params = new URLSearchParams({
+    query: query.trim(),
+    page: String(page),
+  });
+  return apiFetch<MovieSearchResponse>(`/movies/search?${params.toString()}`, {
+    cache: "no-store",
+  });
+}
 
