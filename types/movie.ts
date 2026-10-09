@@ -14,3 +14,15 @@ export interface MovieSearchResponse {
   totalResults: number;
   results: Movie[];
 }
+
+export type SearchParams = Promise<{
+  query?: string | string[];
+  page?: string | string[];
+}>;
+
+export interface PaginationProps {
+  query: string;
+  page: number;
+  totalPages: number;
+  totalResults: number;
+}
