@@ -7,16 +7,26 @@ export const dynamic = "force-dynamic";
 
 interface HomePageProps {
   searchParams: Promise<{
-    query?: string;
-    page?: string;
+    query?: string | string[];
+    page?: string | string[];
   }>;
 }
 
 export default async function HomePage({ searchParams }: HomePageProps) {
-  const { query: rawQuery, page: rawPage } = await searchParams;
+  const params = await searchParams;
+
+  const rawQuery = Array.isArray(params.query) ? params.query[0] : params.query;
+
+  const rawPage = Array.isArray(params.page) ? params.page[0] : params.page;
+
+  const validPage = rawPage && /^[1-9]\d*$/.test(rawPage) ? Number(rawPage) : 1;
+
+  const page =
+    Number.isInteger(validPage) && validPage >= 1 && validPage <= 500
+      ? validPage
+      : 1;
 
   const query = rawQuery?.trim() ?? "";
-  const page = rawPage ? Number(rawPage) : 1;
 
   const isSearching = Boolean(query);
 

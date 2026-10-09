@@ -1,6 +1,11 @@
 import "server-only";
 
-import type { Movie, MovieSearchResponse } from "@globaltypes/movie";
+import type {
+  Movie,
+  MovieDetail,
+  MovieSearchResponse,
+  MovieVideo,
+} from "@globaltypes/movie";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -44,7 +49,6 @@ export function getTrendingMovies(): Promise<Movie[]> {
 // TODO(candidate): add a searchMovies(query, page) function here once the API exposes
 // GET /movies/search — same apiFetch pattern as getTrendingMovies above.
 
-
 export function searchMovies(
   query: string,
   page = 1,
@@ -58,3 +62,14 @@ export function searchMovies(
   });
 }
 
+export function getMovieDetails(id: number): Promise<MovieDetail> {
+  return apiFetch<MovieDetail>(`/movies/${id}`, {
+    next: {
+      revalidate: 300,
+    },
+  });
+}
+
+export function getMovieVideos(id: number): Promise<MovieVideo[]> {
+  return apiFetch<MovieVideo[]>(`/movies/${id}/videos`, { cache: "no-store" });
+}

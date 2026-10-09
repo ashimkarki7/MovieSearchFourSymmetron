@@ -2,6 +2,7 @@ import Image from "next/image";
 import { tv } from "tailwind-variants";
 
 import type { Movie } from "@globaltypes/movie";
+import Link from "next/link";
 
 const card = tv({
   slots: {
@@ -24,30 +25,42 @@ export function MovieCard({ movie }: MovieCardProps) {
 
   return (
     <article className={base()}>
-      <div className={posterWrapper()}>
-        {movie.posterPath ? (
-          <Image
-            src={`https://image.tmdb.org/t/p/w342${movie.posterPath}`}
-            alt={movie.title}
-            fill
-            sizes="(min-width: 1024px) 200px, 45vw"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-xs text-muted">
-            No poster
-          </div>
-        )}
-      </div>
-      <div className={body()}>
-        <h3 className={title()}>{movie.title}</h3>
-        <div className={meta()}>
-          {year && <span>{year}</span>}
-          <span aria-label={`Rated ${movie.voteAverage.toFixed(1)} out of 10`}>
-            ★ {movie.voteAverage.toFixed(1)}
-          </span>
+      <Link
+        href={`/movies/${movie.id}`}
+        className={base()}
+        aria-label={`View details for ${movie.title}`}
+      >
+        <div className={posterWrapper()}>
+          {movie.posterPath ? (
+            <Image
+              src={`https://image.tmdb.org/t/p/w342${movie.posterPath}`}
+              alt={movie.title}
+              fill
+              sizes="(min-width: 1024px) 200px, 45vw"
+              className="object-cover"
+            />
+          ) : (
+            <div
+              aria-hidden="true"
+              className="flex h-full items-center justify-center text-xs text-muted"
+            >
+              {" "}
+              No poster
+            </div>
+          )}
         </div>
-      </div>
+        <div className={body()}>
+          <h3 className={title()}>{movie.title}</h3>
+          <div className={meta()}>
+            {year && <span>{year}</span>}
+            <span
+              aria-label={`Rated ${movie.voteAverage.toFixed(1)} out of 10`}
+            >
+              ★ {movie.voteAverage.toFixed(1)}
+            </span>
+          </div>
+        </div>
+      </Link>
     </article>
   );
 }

@@ -86,3 +86,6 @@ aria-hidden="true" prevents decorative skeleton placeholders from being announce
 
 motion-reduce:animate-none respects operating-system reduced-motion preferences.
 http://localhost:3000/?query=slow&page=1 mock api for loading
+http://localhost:3000/?query=error&page=1 for mock error
+
+added movies detail id

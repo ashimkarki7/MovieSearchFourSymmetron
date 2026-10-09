@@ -12,19 +12,11 @@ export default function Error({
   reset: () => void;
 }) {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const isUnavailable = error.status === 503;
 
   useEffect(() => {
     console.error("Movie search request failed", error);
   }, [error]);
-
-  function retry() {
-    startTransition(() => {
-      reset();
-      router.refresh();
-    });
-  }
 
   const handleBackToTrending = () => {
     reset();
